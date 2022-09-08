@@ -1,0 +1,52 @@
+.history {
+  padding-right: 25px;
+  width: 100%;
+  &-title {
+    &-text {
+      font-size: 16px;
+      font-weight: bold;
+      margin-right: 30px;
+    }
+    .delete-icon {
+      button {
+        border: none;
+        background: none;
+        &:focus {
+          box-shadow: none;
+        }
+        svg {
+          color: gray;
+        }
+      }
+    }
+  }
+  &-links {
+    position: relative;
+    &-next,
+    &-prev {
+      border: 1px solid gray;
+      border-radius: 50%;
+      display: none;
+      height: 25px;
+      width: 25px;
+      svg {
+        position: relative;
+        top: -3px;
+      }
+    }
+    &-next {
+      left: 0;
+      position: absolute;
+    }
+    &-prev {
+      position: absolute;
+      right: 0;
+    }
+    &-link {
+      color: black;
+      margin-top: 10px;
+      margin-left: 10px;
+      text-decoration: none;
+    }
+  }
+}
