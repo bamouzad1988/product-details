@@ -5,7 +5,7 @@ function Menu() {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light ">
-        <div className="container-fluid">
+        <div className="d-flex w-100">
           <a className="navbar-brand" href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +13,7 @@ function Menu() {
               height="30"
               viewBox="0 0 115 30"
             >
-              <g fill="none" fill-rule="evenodd">
+              <g fill="none" fillRule="evenodd">
                 <g fill="#EE384E">
                   <g>
                     <g>
@@ -40,7 +40,7 @@ function Menu() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0 p-0">
               <li className="nav-item"></li>
               <li className="nav-item">
                 <a className="nav-link" href="/">
