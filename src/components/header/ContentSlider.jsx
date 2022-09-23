@@ -1,18 +1,86 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import "./ContentSlider.scss";
 
 function ContentSlider(props) {
-  let lastSearchDivRef = useRef();
+  const btnPrevRef = useRef();
+  const btnNextRef = useRef();
+  const historyRef = useRef();
+  const sliderRef = useRef();
+
   let data = props.data;
 
-  const btnDeleteHandler = (e) => {
-    console.log(e);
+  useEffect(() => {
+    let flag = 1;
+    if (sliderRef.current.offsetWidth > historyRef.current.offsetWidth) {
+      btnNextRef.current.style.display = "inline";
+
+      let sliderChildren = sliderRef.current.childNodes;
+
+      for (let x = 0; x < sliderChildren.length; x++) {
+        if (flag) {
+          let nextSlideElement =
+            sliderRef.current.offsetWidth - sliderChildren[x].offsetLeft >
+            historyRef.current.offsetWidth;
+          if (nextSlideElement) {
+            flag = 0;
+            sliderChildren[x].setAttribute("currentRef", "1");
+            sliderChildren[x + 1].setAttribute("currentRef", "2");
+          }
+        }
+      }
+    }
+  }, []);
+
+  const btnNextHandler = () => {
+    btnPrevRef.current.style.display = "inline";
+    let currentElement = document.querySelector("[currentRef='1']");
+    let nextElement = document.querySelector("[currentRef='2']");
+    let sliderLeft = sliderRef.current.style.left;
+
+    if (sliderLeft) {
+      sliderLeft = sliderRef.current.style.left.split("px");
+      sliderRef.current.style.left =
+        +sliderLeft[0] + currentElement.offsetWidth + 10 + "px";
+      let flag = currentElement.offsetWidth + 10;
+      // let ee = setInterval(() => {
+      //   flag--;
+      //   sliderRef.current.style.left =
+      //     +sliderLeft[0] + currentElement.offsetWidth + 10 + "px";
+      //   if (!flag) {
+      //     clearInterval(ee);
+      //   }
+      // }, 200);
+    } else {
+      sliderRef.current.style.left = currentElement.offsetWidth + 20 + "px";
+    }
+
+    currentElement.setAttribute("currentRef", "0");
+    nextElement.setAttribute("currentRef", "1");
+    nextElement.nextElementSibling &&
+      nextElement.nextElementSibling.setAttribute("currentRef", "2");
+
+    if (currentElement.offsetLeft === 10) {
+      btnNextRef.current.style.display = "none";
+    }
   };
+
+  const btnPrevHandler = () => {
+    btnNextRef.current.style.display = "inline";
+  };
+
+  const btnDeleteHandler = () => {
+    historyRef.current.remove();
+  };
+
   return (
-    <div className="history  mt-3">
-      <button className="btn history-links-prev p-0">
+    <div ref={historyRef} className="history  mt-3">
+      <button
+        onClick={btnPrevHandler}
+        ref={btnPrevRef}
+        className="btn history-links-prev p-0"
+      >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="http://sliderChildrenw.w3.org/2000/svg"
           width="12"
           height="12"
           fill="currentColor"
@@ -25,7 +93,11 @@ function ContentSlider(props) {
           />
         </svg>
       </button>
-      <button className="btn history-links-next p-0">
+      <button
+        onClick={btnNextHandler}
+        ref={btnNextRef}
+        className="btn history-links-next p-0"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="12"
@@ -53,8 +125,8 @@ function ContentSlider(props) {
         </div>
       </div>
       {/* link */}
-      <div className="pt-3 history-links pe-5">
-        <div className="slider">
+      <div className="pt-3 history-links">
+        <div className="slider" ref={sliderRef}>
           {data.map((link, index) => {
             let searchTerm = `/page?term=${link.term}`;
             return (
@@ -62,6 +134,7 @@ function ContentSlider(props) {
                 key={index + link}
                 className="history-links-link"
                 href={searchTerm}
+                currentRef="0"
               >
                 <span>{link.text} </span>
                 <span className="mx-2">
